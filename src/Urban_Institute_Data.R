@@ -22,6 +22,7 @@ head(geo_data)
 wa_data <- geo_data |>
 filter(state_name == "Washington")
 
+# We could create a graph of Washington
 ggplot(wa_data) +
   geom_sf()
 
@@ -41,6 +42,7 @@ map <- ggplot(king_data) +
   my_map_theme() +
   ggtitle("King County Percent Cost Burden")
 
+# This is a map of King County, which gives a closer look at the data.
 ggplotly(map) |>
   style(hoveron = "fills")
   
