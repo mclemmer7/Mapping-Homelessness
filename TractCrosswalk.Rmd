@@ -1,0 +1,52 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(sf)
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+
+
+TractCrosswalk2020 <- st_read("~/Downloads/MIv3Areas_2020TractCrosswalk.gpkg")
+
+
+Seattle_TractCrosswalk2020 <- TractCrosswalk2020 %>%
+  filter(city == "Seattle")
+
+
+```
+
+
+
+
+```{r}
+
+
+
+
+
+# With crosswalks
+ggplot() +
+  geom_sf(data = Seattle_TractCrosswalk2020, aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "blue", "B" = "green", "C" = "yellow", "D" = "orange", "E" = "red", "Unknown" = "gray")) + 
+  theme_minimal()
+
+
+
+
+```
+
+
+...
+
