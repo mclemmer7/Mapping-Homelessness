@@ -1,0 +1,98 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(dplyr)
+```
+
+### Exercise 1
+
+
+
+```{r code-chunk-label}
+
+
+county_court_issued_2000_2018 <- read_csv("~/Downloads/county_court-issued_2000_2018.csv")
+
+county_proprietary_valid_2000_2018 <- read_csv("~/Downloads/county_proprietary_valid_2000_2018.csv")
+
+tract_proprietary_valid_2000_2018 <- read_csv("~/Downloads/tract_proprietary_valid_2000_2018.csv")
+
+
+head(county_court_issued_2000_2018)
+summary(county_court_issued_2000_2018)
+
+W <- county_court_issued_2000_2018 %>%
+  filter(state == "Washington")
+
+King_eviction_lab <- W %>%
+  filter(county == "King County")
+
+
+head(K)
+head(geo_data)
+head(King_geo_data)
+
+King_geo_data2 <- King_geo_data
+
+King_geo_data2$fips_county <- substr(King_geo_data$GEOID, 1, 5)
+
+
+head(King_geo_data2)
+head(King_eviction_lab)
+
+## Merging these two datasets
+
+king_merged_geo_eviction <- merge(King_geo_data2, King_eviction_lab, by = "fips_county")
+
+head(merged_geo_eviction)
+
+View(merged_geo_eviction)
+
+
+
+king_merged_geo_eviction <- merge(King_geo_data2, King_eviction_lab, by = "fips_county")
+
+
+write.csv(king_merged_geo_eviction, file = "merged_geo_eviction.csv", row.names = FALSE)
+
+
+
+View(King_geo_data)
+
+
+
+```
+
+
+
+```{r}
+
+
+View(king_merged_geo_eviction)
+
+ggplot() +
+  geom_sf(data = king_merged_geo_eviction , aes(fill = filings_observed)) +
+  theme_minimal()
+
+
+
+```
+
+
+### King County Bar Data
+
+```{r}
+
+
+
+```
+
+
+...
+
