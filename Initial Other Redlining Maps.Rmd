@@ -10,15 +10,103 @@ library(tidyverse)
 library(openintro)
 ```
 
-### Exercise 1
-
-Insert any text here.
+### Cleveland
 
 ```{r code-chunk-label}
-# Insert code for Exercise 1 here
+
+
+cleveland_data <- mapping_inequality[mapping_inequality$city == "Cleveland", ]
+
+
+ggplot() +
+  geom_sf(data = cleveland_data , aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "green", "B" = "blue", "C" = "yellow", "D" = "red", "Unknown" = "light gray")) + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Cleveland")
+
+
+Cleveland_Redline_Map1 <- ggplot(width = 20, height = 10) +
+  geom_sf(data = cleveland_data, aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "Unknown" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Cleveland_")
+
+
+Cleveland_Redline_Map1
+
 ```
 
-### Exercise 2
+### Pittsburgh
+
+
+```{r}
+
+Pittsburgh_data <- mapping_inequality[mapping_inequality$city == "Pittsburgh", ]
+
+
+Pittsburgh_Redline_Map1 <- ggplot(width = 20, height = 10) +
+  geom_sf(data = Pittsburgh_data, aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "Unknown" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Pittsburgh")
+
+
+Pittsburgh_Redline_Map1
+
+
+```
+
+
+### Chicago
+
+```{r}
+
+Chicago_data <- mapping_inequality[mapping_inequality$city == "Chicago", ]
+
+
+ggplot() +
+  geom_sf(data = Chicago_data , aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "green", "B" = "blue", "C" = "yellow", "D" = "red", "Unknown" = "light gray")) + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Chicago")
+
+
+Chicago_Redline_Map1 <- ggplot(width = 20, height = 10) +
+  geom_sf(data = Chicago_data, aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "Unknown" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Chicago")
+
+
+Chicago_Redline_Map1
+
+```
 
 ...
 
