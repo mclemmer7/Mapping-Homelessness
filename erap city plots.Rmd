@@ -1,0 +1,275 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(ggplot2)
+library(sf)
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+
+
+Cleveland__erap_redlining_dataset
+
+
+# need to convert dataset back to SF datset
+Cleveland__erap_redlining_dataset <- st_as_sf(x = Cleveland__erap_redlining_dataset)
+
+
+
+# Redlining Cleveland Map
+ggplot() +
+  geom_sf(data = Cleveland__erap_redlining_dataset, aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "Unknown" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Cleveland")
+
+
+
+
+# Plot of Percent Cost Burdened for Cleveland
+# This plot looks good 
+ggplot() +
+  geom_sf(data = Cleveland__erap_redlining_dataset, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Map of Cleveland")  
+
+
+
+# median monthly housing cost
+ggplot() +
+  geom_sf(data = Cleveland__erap_redlining_dataset, aes(color = median_monthly_housing_cost, fill = median_monthly_housing_cost)) + theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Cleveland Median Housing Cost") +
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red") 
+
+
+
+# Plot of Percent Cost Burdened for Cleveland
+# Pink and Red gradient
+ggplot() +
+  geom_sf(data = Cleveland__erap_redlining_dataset, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + 
+  theme_minimal() +
+  theme(
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(title = "Cleveland Cost Burdened Renters")  +
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red") 
+
+
+View(Seattle_erap_redlining_dataset)
+
+```
+
+
+
+
+
+
+
+
+
+
+### Seattle
+
+```{r}
+# need to convert dataset back to SF datset
+
+Seattle_erap_redlining_dataset_sf <- st_as_sf(x = Seattle_erap_redlining_dataset)
+
+View(Seattle_erap_redlining_dataset)
+
+
+# Plot of Percent Cost Burdened for Seattle
+ggplot() +
+  geom_sf(data = Seattle_erap_redlining_dataset_sf, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Map of Seattle")  
+
+
+
+
+# Pink and Red color gradient
+ggplot() +
+  geom_sf(data = Seattle_erap_redlining_dataset_sf, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + 
+  theme_minimal() +
+  theme(
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(title = "Map of Seattle") +
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red") 
+
+
+
+
+
+sa_Seattle_erap_redlining_dataset_sf <- fortify(Seattle_erap_redlining_dataset_sf)
+
+
+ggplot() +
+  geom_sf(data = sa_Seattle_erap_redlining_dataset_sf, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + 
+  geom_text(data = fortify(Seattle_erap_redlining_dataset_sf$label))+
+  theme_minimal() +
+  theme(
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(title = "Map of Seattle") + 
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red")
+
+
+summary(Seattle_erap_redlining_dataset_sf$label)
+
+head(Seattle_erap_redlining_dataset_sf$label)
+
+
+
+
+# median monthly housing cost
+ggplot() +
+  geom_sf(data = Seattle_erap_redlining_dataset_sf, aes(color = median_monthly_housing_cost, fill = median_monthly_housing_cost)) + theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Seattle Median Housing Cost") +
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red") 
+
+
+
+ggplot() +
+  geom_sf(data = Seattle_erap_redlining_dataset_sf, aes(color = median_monthly_housing_cost, fill = median_monthly_housing_cost)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Seattle Median Housing Cost") +
+  scale_fill_gradient(low = "light pink", high = "dark red", limits = c(300, 4000)) +
+  scale_color_gradient(low = "light pink", high = "dark red", limits = c(300, 4000))
+
+
+
+```
+
+
+
+### Chicago
+
+
+
+```{r code-chunk-label}
+
+
+Chicago_erap_redlining_dataset
+
+
+# need to convert dataset back to SF datset
+Chicago_erap_redlining_dataset_<- st_as_sf(x = Chicago_erap_redlining_dataset)
+
+
+
+# Redlining Chiacgo Map
+ggplot() +
+  geom_sf(data = Chicago_erap_redlining_dataset, aes(fill = grade)) +
+  scale_fill_manual(values = c("A" = "green", "B" = "blue", "C" = "yellow", "D" = "red", "Unknown" = "light gray")) + 
+    scale_color_manual(values = c("A" = "green", "B" = "blue", "C" = "yellow", "D" = "red", "Unknown" = "light gray")) +
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Redlining Map of Chicago")
+
+
+# Plot of Percent Cost Burdened for Chicago
+# This plot looks good 
+ggplot() +
+  geom_sf(data = Chicago_erap_redlining_dataset, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Map of Chicago")  
+
+
+
+# median monthly housing cost
+ggplot() +
+  geom_sf(data = Chicago_erap_redlining_dataset, aes(color = median_monthly_housing_cost, fill = median_monthly_housing_cost)) + theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "Chicago Median Housing Cost") +
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red") 
+
+
+
+         
+         
+
+
+         
+
+# Plot of Percent Cost Burdened for Chicago
+# Pink and Red gradient
+ggplot() +
+  geom_sf(data =Chicago_erap_redlining_dataset, aes(color = percent_cost_burdened_renters, fill = percent_cost_burdened_renters)) + 
+  theme_minimal() +
+  theme(
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(title = "Chicago Map") +
+  scale_fill_gradient(low = "light pink", high = "dark red") +
+  scale_color_gradient(low = "light pink", high = "dark red") 
+
+
+
+
+```
+
+...
+
