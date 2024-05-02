@@ -7,18 +7,106 @@ output: openintro::lab_report
 
 ```{r load-packages, message=FALSE}
 library(tidyverse)
-library(openintro)
+library(dplyr)
 ```
 
-### Exercise 1
-
-Insert any text here.
+### Seattle Merge ERAP and Mapping Inequality
 
 ```{r code-chunk-label}
-# Insert code for Exercise 1 here
+
+
+King_erap_index1 <- King_erap_index 
+
+King_erap_index1$geometry <- NULL
+
+Seattle_erap_redlining_dataset <- inner_join(King_erap_index1, Seattle_TractCrosswalk2020, by = "GEOID")
+
+
+
+write.csv(Seattle_erap_redlining_dataset,"~/Downloads/Seattle_erap_redlining_merged_dataset.csv", row.names = FALSE)
+
+
+
+
+
 ```
 
-### Exercise 2
+### Cleveland
+
+
+```{r}
+
+Cleveland_TractCrosswalk2020 <- TractCrosswalk2020 %>%
+  filter(city == "Cleveland")
+
+
+Ohio_erap_index <- erap_index %>%
+  filter(state_name == "Ohio")
+
+Ohio_erap_index1 <- Ohio_erap_index 
+
+Ohio_erap_index1$geometry <- NULL
+
+Cleveland__erap_redlining_dataset <- inner_join(Ohio_erap_index1, Cleveland_TractCrosswalk2020, by = "GEOID")
+
+
+
+write.csv(Cleveland__erap_redlining_dataset,"~/Downloads/Cleveland_erap_redlining_merged_dataset.csv", row.names = FALSE)
+
+
+```
+
+
+### Pittsburgh
+
+
+```{r}
+
+Pittsburgh_TractCrosswalk2020 <- TractCrosswalk2020 %>%
+  filter(city == "Pittsburgh")
+
+
+Pennsylvania_erap_index <- erap_index %>%
+  filter(state_name == "Pennsylvania")
+
+Pennsylvania_erap_index1 <- Pennsylvania_erap_index 
+
+Pennsylvania_erap_index1$geometry <- NULL
+
+Pittsburgh_erap_redlining_dataset <- inner_join(Pennsylvania_erap_index1, Pittsburgh_TractCrosswalk2020, by = "GEOID")
+
+
+write.csv(Pittsburgh_erap_redlining_dataset,"~/Downloads/Pittsburgh_erap_redlining_merged_dataset.csv", row.names = FALSE)
+
+```
+
+
+### Chicago
+
+
+```{r}
+
+Chicago_TractCrosswalk2020 <- TractCrosswalk2020 %>%
+  filter(city == "Chicago")
+
+
+Chicago_TractCrosswalk2020  <- st_as_sf(x=Chicago_TractCrosswalk2020)
+
+
+Cook_County_erap_index <- erap_index %>%
+  filter(county_name == "Cook County")
+
+Cook_County_erap_index1 <- Cook_County_erap_index 
+
+Cook_County_erap_index1$geometry <- NULL
+
+Chicago_erap_redlining_dataset <-  inner_join(Cook_County_erap_index1, Chicago_TractCrosswalk2020, by = "GEOID")
+
+
+
+```
+
+
 
 ...
 
