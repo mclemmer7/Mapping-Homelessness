@@ -1,6 +1,6 @@
 ---
 title: "Lab Name"
-author: "Author Name"
+author: "Emily Blue"
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
