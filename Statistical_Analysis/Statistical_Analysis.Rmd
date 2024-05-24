@@ -1,0 +1,31 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+
+library(tidyverse)
+library(openintro)
+library(jsonlite)
+library(ggplot2)
+library(sf)
+
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+
+my_Data <- st_read("Seattle_erap_redlining_dataset.geojson")
+
+```
+
+### Exercise 2
+
+...
+
