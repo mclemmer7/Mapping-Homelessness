@@ -94,6 +94,8 @@ wa_eviction_erap <- wa_erap_condensed |>
   inner_join(wa_evic_lab, by=c("cofips" = "GEOID"))
   # filter(!is.na(index_value))
 
+
+
 # Write out to file:
 #st_write(wa_eviction_erap, dsn = "wa_eviction_erap.geojson", row.names = FALSE)
 
@@ -113,3 +115,108 @@ summary(mod)
 # With the p-value of 0.619, we do not have sufficient evidence to reject the null hypothesis and conclude that there
 # is a weak correlation between the mean erap index value and the eviction rate.
 # The mean erap index value is also very generalized since it is the erap value for a whole county, when it was meant for a smaller region
+
+
+# Bring in data for legacy WA_tracts
+WA_tracts <- read_csv("../data/WA_tracts.csv")
+
+WA_tracts$GEOID <- as.character(WA_tracts$GEOID)
+wa_erap$GEOID <- as.character(wa_erap$GEOID)
+
+# Try simplifying wa_eviction_lab to just use the most recent year
+wa_evic_lab_tracts <- WA_tracts |>
+  group_by(GEOID) |>
+  filter(year == max(year))
+
+# Now merge the datasets
+wa_eviction_erap_tracts <- wa_erap |>
+  left_join(wa_evic_lab_tracts, by="GEOID")
+
+st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
+
+# Map out merged tract dataset
+ggplot(wa_eviction_erap_tracts) +
+  geom_sf(aes(fill = index_value)) +
+  scale_fill_continuous(high = "red", low = "yellow")
+
+
+merge_with_erap <- function(dataset) {
+  dataset$GEOID <- as.character(dataset$GEOID)
+  wa_erap$GEOID <- as.character(wa_erap$GEOID)
+  
+  # Try simplifying wa_eviction_lab to just use the most recent year
+  wa_evic_lab_tracts <- dataset |>
+    group_by(GEOID) |>
+    filter(year == max(year))
+  
+  # Now merge the datasets
+  wa_eviction_erap_tracts <- wa_erap |>
+    left_join(wa_evic_lab_tracts, by="GEOID")
+  
+  st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
+}
+
+# Merge Cleveland Ohio data with ERAP
+OH_tracts <- read_csv("../data/OH_tracts.csv")
+
+oh_erap <- erap_index |>
+  filter(state_name == "Ohio")
+oh_erap$GEOID <- as.numeric(oh_erap$GEOID)
+
+OH_tracts$GEOID <- as.character(OH_tracts$GEOID)
+oh_erap$GEOID <- as.character(oh_erap$GEOID)
+
+# Try simplifying oh_eviction_lab to just use the most recent year
+oh_evic_lab_tracts <- OH_tracts |>
+  group_by(GEOID) |>
+  filter(year == max(year))
+
+# Now merge the datasets
+oh_eviction_erap_tracts <- oh_erap |>
+  left_join(oh_evic_lab_tracts, by="GEOID")
+
+st_write(oh_eviction_erap_tracts, dsn = "oh_eviction_erap_tracts.geojson", row.names = FALSE)
+
+
+# Merge pennsylvania data with ERAP
+PA_tracts <- read_csv("../data/PA_tracts.csv")
+
+pa_erap <- erap_index |>
+  filter(state_name == "Pennsylvania")
+pa_erap$GEOID <- as.numeric(pa_erap$GEOID)
+
+PA_tracts$GEOID <- as.character(PA_tracts$GEOID)
+pa_erap$GEOID <- as.character(pa_erap$GEOID)
+
+# Try simplifying pa_eviction_lab to just use the most recent year
+pa_evic_lab_tracts <- PA_tracts |>
+  group_by(GEOID) |>
+  filter(year == max(year))
+
+# Now merge the datasets
+pa_eviction_erap_tracts <- pa_erap |>
+  left_join(pa_evic_lab_tracts, by="GEOID")
+
+st_write(pa_eviction_erap_tracts, dsn = "pa_eviction_erap_tracts.geojson", row.names = FALSE)
+
+
+# Merge pennsylvania data with ERAP
+IL_tracts <- read_csv("../data/IL_tracts.csv")
+
+il_erap <- erap_index |>
+  filter(state_name == "Illinois")
+il_erap$GEOID <- as.numeric(il_erap$GEOID)
+
+IL_tracts$GEOID <- as.character(IL_tracts$GEOID)
+il_erap$GEOID <- as.character(il_erap$GEOID)
+
+# Try simplifying il_eviction_lab to just use the most recent year
+il_evic_lab_tracts <- IL_tracts |>
+  group_by(GEOID) |>
+  filter(year == max(year))
+
+# Now merge the datasets
+il_eviction_erap_tracts <- il_erap |>
+  left_join(il_evic_lab_tracts, by="GEOID")
+
+st_write(il_eviction_erap_tracts, dsn = "il_eviction_erap_tracts.geojson", row.names = FALSE)
