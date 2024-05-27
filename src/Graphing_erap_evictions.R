@@ -86,3 +86,69 @@ plot(all, scale="adjr2")
 mf <- lm(data = wa_eviction_erap_tracts, evictions ~ index_value + housing_subindex_value + income_subindex_value + median_monthly_housing_cost + percent_minority + population + poverty.rate)
 MSE=(summary(mf)$sigma)^2
 step(mf, scale=MSE, direction = "backward")
+
+m2 <- lm(data = wa_eviction_erap_tracts, eviction.rate ~ index_value + housing_subindex_value + income_subindex_value + median_monthly_housing_cost + population + poverty.rate)
+
+summary(m2)
+
+# Find the best way to predict evictions
+chicago_erap_red_evic <- st_read("../data/chicago_erap_red_evic.geojson")
+pittsburgh_erap_red_evic <- st_read("../data/pittsburgh_erap_red_evic.geojson")
+cleveland_erap_red_evic <- st_read("../data/cleveland_erap_red_evic.geojson")
+seattle_erap_red_evic <- st_read("../data/seattle_erap_red_evic.geojson")
+
+# Make indicator variable for redlining grades
+seattle_data <- seattle_erap_red_evic |>
+  mutate(cat_Best = ifelse(cat == "Best", 1, 0),
+         cat_Definitely_Declining = ifelse(cat == "Definitely Declining", 1, 0),
+         cat_Hazardous = ifelse(cat == "Hazardous", 1, 0),
+         cat_Industrial = ifelse(cat == "Industrial", 1, 0),
+         cat_Commercial = ifelse(cat == "Commercial District (Important Retail and Wholesale)", 1, 0),
+         cat_Still_Desirable = ifelse(cat == "Still Desirable", 1, 0))
+
+# Make indicator variable for redlining grades
+cleveland_data <- cleveland_erap_red_evic |>
+  mutate(cat_Best = ifelse(cat == "Best", 1, 0),
+         cat_Definitely_Declining = ifelse(cat == "Definitely Declining", 1, 0),
+         cat_Hazardous = ifelse(cat == "Hazardous", 1, 0),
+         cat_Industrial = ifelse(cat == "Industrial", 1, 0),
+         cat_Commercial = ifelse(cat == "Commercial District (Important Retail and Wholesale)", 1, 0),
+         cat_Still_Desirable = ifelse(cat == "Still Desirable", 1, 0))
+
+# Make indicator variable for redlining grades
+chicago_data <- chicago_erap_red_evic |>
+  mutate(cat_Best = ifelse(cat == "Best", 1, 0),
+         cat_Definitely_Declining = ifelse(cat == "Definitely Declining", 1, 0),
+         cat_Hazardous = ifelse(cat == "Hazardous", 1, 0),
+         cat_Industrial = ifelse(cat == "Industrial", 1, 0),
+         cat_Commercial = ifelse(cat == "Commercial District (Important Retail and Wholesale)", 1, 0),
+         cat_Still_Desirable = ifelse(cat == "Still Desirable", 1, 0))
+
+# Make indicator variable for redlining grades
+pittsburgh_data <- seattle_erap_red_evic |>
+  mutate(cat_Best = ifelse(cat == "Best", 1, 0),
+         cat_Definitely_Declining = ifelse(cat == "Definitely Declining", 1, 0),
+         cat_Hazardous = ifelse(cat == "Hazardous", 1, 0),
+         cat_Industrial = ifelse(cat == "Industrial", 1, 0),
+         cat_Commercial = ifelse(cat == "Commercial District (Important Retail and Wholesale)", 1, 0),
+         cat_Still_Desirable = ifelse(cat == "Still Desirable", 1, 0))
+
+# Continue predicting evictions with added redlining data
+m3 <- lm(index_value ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial + cat_Still_Desirable + cat_Commercial, data = cleveland_data)
+summary(m3)
+
+m4 <- regsubsets(data = pittsburgh_data, evictions ~ index_value + housing_subindex_value + income_subindex_value + median_monthly_housing_cost + population + poverty.rate + cat_Definitely_Declining + cat_Hazardous + cat_Industrial + cat_Still_Desirable + cat_Commercial)
+round(summary(m4)$adjr2, 3)
+plot(m4, scale="adjr2")
+
+m5 <- lm(data = seattle_data, eviction.rate ~ index_value + housing_subindex_value + income_subindex_value + median_monthly_housing_cost + percent_minority + poverty.rate + cat_Definitely_Declining + cat_Still_Desirable)
+summary(m5)
+
+m6 <- lm(data = chicago_data, evictions ~ housing_subindex_value + income_subindex_value + median_monthly_housing_cost + population + poverty.rate + cat_Definitely_Declining + cat_Hazardous + cat_Industrial)
+summary(m6)
+
+m7 <- lm(data = chicago_data, eviction.rate ~ index_value + housing_subindex_value + income_subindex_value + median_monthly_housing_cost + poverty.rate + cat_Definitely_Declining + cat_Hazardous + cat_Industrial)
+summary(m7)
+
+m8 <- lm(data = cleveland_data, evictions ~ housing_subindex_value + income_subindex_value + population + poverty.rate + cat_Definitely_Declining + cat_Hazardous + cat_Industrial + cat_Still_Desirable)
+summary(m8)

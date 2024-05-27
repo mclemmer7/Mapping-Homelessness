@@ -132,29 +132,13 @@ wa_evic_lab_tracts <- WA_tracts |>
 wa_eviction_erap_tracts <- wa_erap |>
   left_join(wa_evic_lab_tracts, by="GEOID")
 
-st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
+#st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
 
 # Map out merged tract dataset
 ggplot(wa_eviction_erap_tracts) +
   geom_sf(aes(fill = index_value)) +
   scale_fill_continuous(high = "red", low = "yellow")
 
-
-merge_with_erap <- function(dataset) {
-  dataset$GEOID <- as.character(dataset$GEOID)
-  wa_erap$GEOID <- as.character(wa_erap$GEOID)
-  
-  # Try simplifying wa_eviction_lab to just use the most recent year
-  wa_evic_lab_tracts <- dataset |>
-    group_by(GEOID) |>
-    filter(year == max(year))
-  
-  # Now merge the datasets
-  wa_eviction_erap_tracts <- wa_erap |>
-    left_join(wa_evic_lab_tracts, by="GEOID")
-  
-  st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
-}
 
 # Merge Cleveland Ohio data with ERAP
 OH_tracts <- read_csv("../data/OH_tracts.csv")
@@ -175,7 +159,7 @@ oh_evic_lab_tracts <- OH_tracts |>
 oh_eviction_erap_tracts <- oh_erap |>
   left_join(oh_evic_lab_tracts, by="GEOID")
 
-st_write(oh_eviction_erap_tracts, dsn = "oh_eviction_erap_tracts.geojson", row.names = FALSE)
+#st_write(oh_eviction_erap_tracts, dsn = "oh_eviction_erap_tracts.geojson", row.names = FALSE)
 
 
 # Merge pennsylvania data with ERAP
@@ -197,7 +181,7 @@ pa_evic_lab_tracts <- PA_tracts |>
 pa_eviction_erap_tracts <- pa_erap |>
   left_join(pa_evic_lab_tracts, by="GEOID")
 
-st_write(pa_eviction_erap_tracts, dsn = "pa_eviction_erap_tracts.geojson", row.names = FALSE)
+#st_write(pa_eviction_erap_tracts, dsn = "pa_eviction_erap_tracts.geojson", row.names = FALSE)
 
 
 # Merge pennsylvania data with ERAP
@@ -219,4 +203,80 @@ il_evic_lab_tracts <- IL_tracts |>
 il_eviction_erap_tracts <- il_erap |>
   left_join(il_evic_lab_tracts, by="GEOID")
 
-st_write(il_eviction_erap_tracts, dsn = "il_eviction_erap_tracts.geojson", row.names = FALSE)
+#st_write(il_eviction_erap_tracts, dsn = "il_eviction_erap_tracts.geojson", row.names = FALSE)
+
+
+
+# Merge everything together to have redlining data with the evictions and erap
+seattle_redlining <- st_read("../data/Seattle_erap_redlining_dataset.geojson")
+
+seattle_redlining$geometry <- NULL
+seattle_redlining_simplified <- seattle_redlining |>
+  select(GEOID, area_id, cat, grade, label, calc_area, city)
+
+# Now remove some columns from the eviction erap data
+wa_simplified <- wa_eviction_erap_tracts |>
+  select(-pct.white, -pct.af.am, -pct.hispanic, -pct.am.ind, -pct.asian,
+         -pct.nh.pi, -pct.multiple, -pct.other, -imputed, -subbed)
+
+merged_seattle_data <- seattle_redlining_simplified |>
+  left_join(wa_simplified, by="GEOID") |>
+  st_as_sf()
+
+st_write(merged_seattle_data, dsn = "seattle_erap_red_evic.geojson", row.names = FALSE)
+
+# Merge data for cleveland
+cleveland_redlining <- st_read("../data/Cleveland__erap_redlining_dataset.geojson")
+
+cleveland_redlining$geometry <- NULL
+cleveland_redlining_simplified <- cleveland_redlining |>
+  select(GEOID, area_id, cat, grade, label, calc_area, city)
+
+# Now remove some columns from the eviction erap data
+oh_simplified <- oh_eviction_erap_tracts |>
+  select(-pct.white, -pct.af.am, -pct.hispanic, -pct.am.ind, -pct.asian,
+         -pct.nh.pi, -pct.multiple, -pct.other, -imputed, -subbed)
+
+merged_cleveland_data <- cleveland_redlining_simplified |>
+  left_join(oh_simplified, by="GEOID") |>
+  st_as_sf()
+
+st_write(merged_cleveland_data, dsn = "cleveland_erap_red_evic.geojson", row.names = FALSE)
+
+
+# Merge data for pittsburgh
+pittsburgh_redlining <- st_read("../data/Pittsburgh_erap_redlining_dataset.geojson")
+
+pittsburgh_redlining$geometry <- NULL
+pittsburgh_redlining_simplified <- pittsburgh_redlining |>
+  select(GEOID, area_id, cat, grade, label, calc_area, city)
+
+# Now remove some columns from the eviction erap data
+pa_simplified <- pa_eviction_erap_tracts |>
+  select(-pct.white, -pct.af.am, -pct.hispanic, -pct.am.ind, -pct.asian,
+         -pct.nh.pi, -pct.multiple, -pct.other, -imputed, -subbed)
+
+merged_pittsburgh_data <- pittsburgh_redlining_simplified |>
+  left_join(pa_simplified, by="GEOID") |>
+  st_as_sf()
+
+st_write(merged_pittsburgh_data, dsn = "pittsburgh_erap_red_evic.geojson", row.names = FALSE)
+
+
+# Merge data for chicago
+chicago_redlining <- st_read("../data/Chicago_erap_redlining_dataset.geojson")
+
+chicago_redlining$geometry <- NULL
+chicago_redlining_simplified <- chicago_redlining |>
+  select(GEOID, area_id, cat, grade, label, calc_area, city)
+
+# Now remove some columns from the eviction erap data
+il_simplified <- il_eviction_erap_tracts |>
+  select(-pct.white, -pct.af.am, -pct.hispanic, -pct.am.ind, -pct.asian,
+         -pct.nh.pi, -pct.multiple, -pct.other, -imputed, -subbed)
+
+merged_chicago_data <- chicago_redlining_simplified |>
+  left_join(il_simplified, by="GEOID") |>
+  st_as_sf()
+
+st_write(merged_chicago_data, dsn = "chicago_erap_red_evic.geojson", row.names = FALSE)
