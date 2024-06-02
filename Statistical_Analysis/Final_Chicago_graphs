@@ -11,7 +11,7 @@ library(gridExtra)
 library(grid)
 
 # Load data
-chicago <- read_sf("chicago_erap_red_evic_3.geojson")
+chicago <- read_sf("chicago_erap_red_evic 3.geojson")
 
 # Handle missing values by removing rows with NAs
 chicago_clean <- chicago |>
@@ -77,14 +77,14 @@ plot9 <- ggplot(chicago_clean, aes(x = median.gross.rent, y = eviction_rate)) +
 
 # Combine all races into a long format
 chicago_long <- chicago_clean |>
-  gather(key = "races_nonWhite", value = "percent_races_nonWhite", percent_black, percent_asian, percent_latine, percent_other)
+  gather(key = "races_nonWhite", value = "percen231321t_races_nonWhite", percent_black, percent_asian, percent_latine, percent_other)
 
 # Create the combined scatter plot using Plotly
 combined_plot <- ggplot(chicago_long, aes(x = percent_races_nonWhite, y = eviction_rate, fill = races_nonWhite)) +
   geom_point(color = "black", alpha = 0.35, shape = 21, stroke = 0.5) +
   geom_jitter(alpha = 0.50) +
   labs(title = "Eviction Rate by Percent Population of All Races", x = "Percent Population", y = "Eviction Rate (per 1000)") +
-  scale_y_continuous(limits = c(0,13)) +
+  scale_y_continuous(limits = c(0,60)) +
   scale_x_continuous(limits = c(0, 1))
 
 combined_plotly <- ggplotly(combined_plot)
