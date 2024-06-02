@@ -77,7 +77,7 @@ plot9 <- ggplot(chicago_clean, aes(x = median.gross.rent, y = eviction_rate)) +
 
 # Combine all races into a long format
 chicago_long <- chicago_clean |>
-  gather(key = "races_nonWhite", value = "percen231321t_races_nonWhite", percent_black, percent_asian, percent_latine, percent_other)
+  gather(key = "races_nonWhite", value = "percent_races_nonWhite", percent_black, percent_asian, percent_latine, percent_other)
 
 # Create the combined scatter plot using Plotly
 combined_plot <- ggplot(chicago_long, aes(x = percent_races_nonWhite, y = eviction_rate, fill = races_nonWhite)) +
