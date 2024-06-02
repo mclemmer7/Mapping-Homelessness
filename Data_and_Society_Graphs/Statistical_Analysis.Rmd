@@ -1,0 +1,100 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(sf)
+library(jsonlite)
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+
+
+my_Stats <- st_read("Seattle_erap_redlining_dataset.geojson")
+my_Stats <- my_Stats |> 
+  filter(county_name == "King County", !is.na(grade), grade != "N/A") |> 
+  drop_na(housing_subindex_value, percent_cost_burdened_renters, percent_black, percent_latine, percent_asian, percent_other)
+
+p_black <- ggplot(my_Stats, aes(x = index_value, y = percent_cost_burdened_renters, 
+                                color = grade, size = percent_black)) +
+  geom_point(alpha = 0.6) +
+  scale_size_continuous(breaks = c(0.0, 0.05, 0.25, 0.35, 0.45, 0.55), limits = c(0, 1.5)) +
+  labs(title = "Seattle's Index value vs. Cost Burdened Renters (Black)", 
+       x = "Index Value", 
+       y = "Percent Cost Burdened Renters") +
+  theme_minimal()
+
+
+```
+
+### Exercise 2
+
+```{r}
+p_Asian<- ggplot(my_Stats, aes(x = index_value, y = percent_cost_burdened_renters, 
+                                color = grade, size = percent_asian)) +
+  geom_point(alpha = 0.6) +
+  scale_size_continuous(breaks = c(0.0, 0.05, 0.25, 0.35, 0.45, 0.55), limits = c(0, 1.5)) +
+  labs(title = "Seattle's Index value vs. Cost Burdened Renters (Asian)", 
+       x = "Index Value", 
+       y = "Percent Cost Burdened Renters") +
+  theme_minimal()
+
+```
+
+
+```{r}
+
+
+
+p_latine <- ggplot(my_Stats, aes(x = index_value, y = percent_cost_burdened_renters, 
+                                color = grade, size = percent_latine)) +
+  geom_point(alpha = 0.6) +
+  scale_size_continuous(breaks = c(0.0, 0.05, 0.25, 0.35, 0.45, 0.55), limits = c(0, 1.5)) +
+  labs(title = "Seattle's Index value vs. Cost Burdened Renters (Latine)", 
+       x = "Index Value", 
+       y = "Percent Cost Burdened Renters") +
+  theme_minimal()
+
+```
+
+
+```{r}
+p_other <- ggplot(my_Stats, aes(x = index_value, y = percent_cost_burdened_renters, 
+                                color = grade, size = percent_other)) +
+  geom_point(alpha = 0.6) +
+  scale_size_continuous(breaks = c(0.0, 0.05, 0.25, 0.35, 0.45, 0.55), limits = c(0, 1.5)) +
+  labs(title = "Seattle's Inndex value vs. Cost Burdened Renters (Other)", 
+       x = "Index Value", 
+       y = "Percent Cost Burdened Renters") +
+  theme_minimal() 
+
+```
+
+
+```{r}
+print(p_black)
+print(p_Asian)
+print(p_latine)
+print(p_other)
+```
+
+```{r}
+
+# Performing ANOVA
+anova_results <- aov(percent_cost_burdened_renters ~ index_value, data = my_Stats)
+summary(anova_results)
+```
+
+
+
+
+

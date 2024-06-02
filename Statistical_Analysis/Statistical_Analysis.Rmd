@@ -12,7 +12,8 @@ library(openintro)
 library(jsonlite)
 library(ggplot2)
 library(sf)
-
+library(GGally)
+library(plotly)
 ```
 
 ### Exercise 1
@@ -21,11 +22,24 @@ Insert any text here.
 
 ```{r code-chunk-label}
 
-my_Data <- st_read("Seattle_erap_redlining_dataset.geojson")
-
+chicago <- st_read("chicago_erap_red_evic.geojson")
 ```
+
 
 ### Exercise 2
 
-...
+```{r}
+box_plot <- ggplot(chicago, aes(x = factor(median.household.income), y = eviction.rate)) +
+  geom_point() +
+  labs(title = "Eviction Rates Across Income Brackets",
+       x = "Median Household Income", y = "Eviction Rate")
+print(box_plot)
+```
+
+
+```{r}
+
+```
+
+
 
