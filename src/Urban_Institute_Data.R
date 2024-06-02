@@ -8,8 +8,11 @@ library(jsonlite)
 library(sf)
 library(tidyverse)
 library(plotly)
+<<<<<<< HEAD
 
 #
+=======
+>>>>>>> a24c8b4071c9c796e1e1c5d835d938314f768cb9
 
 # Define the URL of the GeoJSON file
 url <- "https://urban-data-catalog.s3.amazonaws.com/drupal-root-live/2023/07/07/data_catalog_index_spatial.geojson"
@@ -21,7 +24,10 @@ geo_data <- st_read(url)
 # For example, to view the first few rows of the data
 head(geo_data)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a24c8b4071c9c796e1e1c5d835d938314f768cb9
 wa_data <- geo_data |>
 filter(state_name == "Washington")
 
@@ -32,11 +38,14 @@ ggplot(wa_data) +
 king_data <- geo_data |>
   filter(state_name == "Washington" & county_name == "King County")
 
+<<<<<<< HEAD
 # Extracting Fips number out of the geojson data for Washington State
 
 king_data <- king_data |> 
   
 
+=======
+>>>>>>> a24c8b4071c9c796e1e1c5d835d938314f768cb9
 my_map_theme <- function(){
   theme(panel.background=element_blank(),
         axis.text=element_blank(),
@@ -45,7 +54,11 @@ my_map_theme <- function(){
 }
 
 map <- ggplot(king_data) +
+<<<<<<< HEAD
   geom_sf(aes(fill =  )) +
+=======
+  geom_sf(aes(fill = percent_cost_burdened_renters)) +
+>>>>>>> a24c8b4071c9c796e1e1c5d835d938314f768cb9
   scale_fill_continuous(high = "red", low = "yellow", labels = scales::percent, breaks=c(0.001,0.30, 0.60)) +
   my_map_theme() +
   ggtitle("King County Percent Cost Burden")
