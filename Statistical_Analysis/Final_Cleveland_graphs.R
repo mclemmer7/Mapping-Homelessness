@@ -10,7 +10,7 @@ library(reshape2)
 library(gridExtra)
 
 # Load data
-cleveland <- read_sf("cleveland_erap_red_evic.geojson")
+cleveland <- read_sf("cleveland_erap_red_evic 3.geojson")
 
 # Handle missing values by removing rows with NAs
 cleveland_clean <- cleveland |>
