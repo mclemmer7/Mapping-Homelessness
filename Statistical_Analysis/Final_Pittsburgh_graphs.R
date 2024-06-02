@@ -11,7 +11,7 @@ library(gridExtra)
 library(grid)
 
 # Load data
-pittsburgh <- read_sf("pittsburgh_erap_red_evic_3.geojson")
+pittsburgh <- read_sf("pittsburgh_erap_red_evic 3.geojson")
 
 # Handle missing values by removing rows with NAs
 pittsburgh_clean <- pittsburgh |>
