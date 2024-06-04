@@ -1,0 +1,26 @@
+---
+title: "Evaluation of the ERAP Index and Modern Effects of Redlining"
+author: "Savannah Meyer, Benyamin Yeimo, Emily Blue, Mark Clemmer"
+date: "2024-06-03"
+output: html_document
+---
+## Abstract: 
+
+## Introduction:
+
+## Methods:
+
+## Results:
+
+## Discussion:
+###ERAP indicators Results Discussion:
+
+###Limitations:
+
+### Eviction vs. ERAP Index Results:
+
+### Limitations:
+
+### Redlining Results:
+
+### Limitations:
