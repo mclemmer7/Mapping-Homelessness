@@ -1,0 +1,166 @@
+---
+title: "Interactive Redlining Maps"
+author: "Emily Blue"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(dplyr)
+library(plotly)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+### Loading in Datasets
+
+Seattle_erap_redlining_dataset <- st_read("Seattle_erap_redlining.geojson", quiet=TRUE)
+
+Pittsburgh_erap_redlining_dataset <- st_read("Pittsburgh_erap_redlining.geojson", quiet=TRUE)
+
+Cleveland__erap_redlining_dataset <- st_read("Cleveland_erap_redlining.geojson", quiet=TRUE)
+
+Chicago_erap_redlining_dataset <- st_read("Chicago_erap_redlining.geojson", quiet=TRUE)
+
+
+
+
+```
+
+
+
+### Seattle 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+Sea_map2 <-ggplot(width = 30, height = 15) +
+  geom_sf(data = Seattle_erap_redlining_dataset, aes(fill = grade, 
+                                      text = paste("Grade", grade, ":", cat, "<br>",
+                                                   "Percent Minority:", percent_minority_pct, "%", "<br>", "<br>",
+                                                   ifelse(grade != "E", paste("Label:", label, "<br>"), ""),
+                                                   "ERAP Value:", index_value, "<br>",
+                                                   "Median Monthly Cost: $", median_monthly_housing_cost, "<br>",
+                                                   "Cost Burdened Renters:", percent_cost_burdened_renters_pct, "%"))) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.title = element_text(family = "Times New Roman", size = 15)) +  
+  labs(title = "<b>Redlining Map: <span style='font-size: larger;'>Seattle</span></b>")
+
+
+Sea_map2_plotly <- ggplotly(Sea_map2, tooltip = "text")
+Sea_map2_plotly 
+
+```
+
+### Cleveland
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+Clev_2red_map <- ggplot(width = 30, height = 15) +
+  geom_sf(data = Cleveland__erap_redlining_dataset, aes(fill = grade, 
+                                      text =paste("Grade", grade, ":", cat, "<br>",
+                                                   "Percent Minority:", percent_minority_pct, "%", "<br>", "<br>",
+                                                   ifelse(grade != "E", paste("Label:", label, "<br>"), ""),
+                                                   "ERAP Value:", index_value, "<br>",
+                                                   "Median Monthly Cost: $", median_monthly_housing_cost, "<br>",
+                                                   "Cost Burdened Renters:", percent_cost_burdened_renters_pct, "%"))) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.title = element_text(family = "Times New Roman", size = 15)) +  
+  labs(title = "<b>Redlining Map: <span style='font-size: larger;'>Cleveland</span></b>")
+
+
+
+Clev_map_plotly <- ggplotly(Clev_2red_map, tooltip = "text")
+
+
+Clev_map_plotly 
+
+```
+
+### Pittsburgh
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+Pitts_map1 <- ggplot(width = 30, height = 15) +
+  geom_sf(data = Pittsburgh_erap_redlining_dataset, aes(fill = grade, 
+                                      text = paste("Grade", grade, ":", cat, "<br>",
+                                                   "Percent Minority:", percent_minority_pct, "%", "<br>", "<br>",
+                                                   ifelse(grade != "E", paste("Label:", label, "<br>"), ""),
+                                                   "ERAP Value:", index_value, "<br>",
+                                                   "Median Monthly Cost: $", median_monthly_housing_cost, "<br>",
+                                                   "Cost Burdened Renters:", percent_cost_burdened_renters_pct, "%"))) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.title = element_text(family = "Times New Roman", size = 15)) +  
+  labs(title = "<b>Redlining Map: <span style='font-size: larger;'>Pittsburgh</span></b>")
+
+
+
+Pitts_map1_plotly <- ggplotly(Pitts_map1 , tooltip = "text")
+
+Pitts_map1_plotly
+
+```
+
+
+
+
+### Chicago
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+Chicago_red_map1 <- ggplot(width = 30, height = 15) +
+  geom_sf(data = Chicago_erap_redlining_dataset, aes(fill = grade, 
+                                      text =paste("Grade", grade, ":", cat, "<br>",
+                                                   "Percent Minority:", percent_minority_pct, "%", "<br>", "<br>",
+                                                   ifelse(grade != "E", paste("Label:", label, "<br>"), ""),
+                                                   "ERAP Value:", index_value, "<br>",
+                                                   "Median Monthly Cost: $", median_monthly_housing_cost, "<br>",
+                                                   "Cost Burdened Renters:", percent_cost_burdened_renters_pct, "%"))) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48"),
+                    labels = c("A. Best", "B. Still Desirable", "C. Definitely Declining", "D. Hazardous", "E. Industrial/Business"),
+                    name = "Grade of Security") + 
+  theme_minimal() +
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.title = element_text(family = "Times New Roman", size = 15)) +  
+  labs(title = "<b>Redlining Map: <span style='font-size: larger;'>Chicago</span></b>")
+
+
+Chicago_map_plotly <- ggplotly(Chicago_red_map1, tooltip = "text")
+
+
+Chicago_map_plotly
+
+
+```
+
+
+
+
+
+
+...
+
