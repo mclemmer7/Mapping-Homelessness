@@ -418,6 +418,10 @@ Pittsburgh_erap_redlining_dataset <- st_read("../data/Pittsburgh_erap_redlining.
 
 Chicago_erap_redlining_dataset <- st_read("../data/Chicago_erap_redlining.geojson", quiet=TRUE)
 
+
+Chicago_erap_redlining_dataset <-Chicago_erap_redlining_dataset%>%
+  mutate(grade = ifelse(is.na(grade), "E", grade))
+
 ```
 
 
@@ -463,9 +467,7 @@ chicago_poc_boxplot <- ggplot(data = Chicago_erap_redlining_dataset) +
         axis.text.x = element_text(size = 8))
 
 chicago_poc_boxplot
-
 ```
-
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -512,6 +514,101 @@ clev_poc_boxplot <- ggplot(data = Cleveland__erap_redlining_dataset) +
 
 
 clev_poc_boxplot
+
+```
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+sea_erap_boxplot <- ggplot(data = Seattle_erap_redlining_dataset) +
+  aes(x = grade, y = index_value, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Seattle"), atop(italic("ERAP Index Value by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "ERAP Index") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+sea_erap_boxplot
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+chicago_erap_boxplot <- ggplot(data = Chicago_erap_redlining_dataset) +
+  aes(x = grade, y = index_value, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Chicago"), atop(italic("ERAP Index Value by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "ERAP Index") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+chicago_erap_boxplot
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+pitts_erap_boxplot <- ggplot(data = Pittsburgh_erap_redlining_dataset) +
+  aes(x = grade, y = index_value, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Pittsburgh"), atop(italic("ERAP Index Value by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "ERAP Index") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+pitts_erap_boxplot 
+
+```
+
+```{r}
+
+cleve_erap_boxplot <- ggplot(data = Cleveland__erap_redlining_dataset) +
+  aes(x = grade, y = index_value, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Cleveland"), atop(italic("ERAP Index Value by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "ERAP Index") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+cleve_erap_boxplot
 
 ```
 
