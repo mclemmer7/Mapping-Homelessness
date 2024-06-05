@@ -240,6 +240,174 @@ plotly2 <- ggplotly(pa_map, tooltip = "text") |>
 
 ### Redlining Results:
 
+
+Redlining Models
+
+For each of the four cities, a linear model predicting the current percent minority in an area based on HOC Redlining grade was created. Additionally, a linear model predicting the ERAP value was created. 
+
+
+For each model, both Grade A: Best and Grade B: Still Desirable were used as reference categories. Dummy variables for Grade C: Definitely Declining, Grade D: Hazardous, and Grade E: Industrial/Commercial were created and included as predictor variables in the models. 
+
+Results showed that for each of the models, all coefficients had positive significant values (P < 0.05). 
+
+
+This result shows that compared to areas with redlining grades of  Grade A: Best and Grade B: Still Desirable, areas where redlining grades were Grade C: Ddefinitely Declining, Grade D: Hazardous, or Grade E: Industrial/Commercial are all likely to have higher percentages of minorities living there now and significantly likely to have lower ERAP values. 
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+#### Seattle Minority Index Equation
+sea1_intercept <- 0.228
+sea1_coef_Definitely_Declining <- 0.075
+sea1_coef_Hazardous <- 0.132
+sea1_coef_Industrial <- 0.1107
+
+sea_minority_equation <-  paste(
+  "y = ", sea1_intercept, "\n",
+  "    + ", sea1_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", sea1_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", sea1_coef_Industrial, "* E_Industrial"
+)
+
+
+
+cat("Seattle Minority Percentage Equation:\n", sea_minority_equation, "\n")
+
+
+
+
+### Seattle ERAP Value Equation
+sea2_intercept <- 48.64
+sea2_coef_Definitely_Declining <- 7.98
+sea2_coef_Hazardous <- 15.93
+sea2_coef_Industrial <- 24.01
+
+
+sea_value_equation <- paste(
+  "y = ", sea2_intercept, "\n",
+  "    + ", sea2_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", sea2_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", sea2_coef_Industrial, "* E_Industrial"
+)
+
+
+cat("Seattle Index Value Equation:\n", sea_value_equation, "\n")
+
+
+
+#### Chicago Minority Index Equation
+chicago1_intercept <- 0.4171
+chicago1_coef_Definitely_Declining <- 0.2033
+chicago1_coef_Hazardous <- 0.3047
+chicago1_coef_Industrial <- 0.2849
+
+chicago_minority_equation <-  paste(
+  "y = ", chicago1_intercept, "\n",
+  "    + ", chicago1_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", chicago1_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", chicago1_coef_Industrial, "* E_Industrial"
+)
+
+
+cat("Chicago Minority Percentage Equation:\n", chicago_minority_equation, "\n")
+
+
+
+### Chicago ERAP Value Equation
+chicago2_intercept <- 47.34
+chicago2_coef_Definitely_Declining <- 18.88
+chicago2_coef_Hazardous <- 24.48
+chicago2_coef_Industrial <- 19.82
+
+chicago_value_equation <- paste(
+  "y = ", chicago2_intercept, "\n",
+  "    + ", chicago2_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", chicago2_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", chicago2_coef_Industrial, "* E_Industrial"
+)
+
+
+cat("Chicago Index Value Equation:\n", chicago_value_equation, "\n")
+
+
+
+
+#### Pittsburgh Minority Index Equation
+pitts1_intercept <- 0.2116
+pitts1_coef_Definitely_Declining <- 0.0874
+pitts1_coef_Hazardous <- 0.1165
+pitts1_coef_Industrial <- 0.1325
+
+pitts_minority_equation <-  paste(
+  "y = ", pitts1_intercept, "\n",
+  "    + ", pitts1_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", pitts1_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", pitts1_coef_Industrial, "* E_Industrial"
+)
+
+
+cat("Pittsburgh Minority Percentage Equation:\n", pitts_minority_equation, "\n")
+
+
+
+#### Pittsburgh ERAP Value Equation
+
+pitts2_intercept <- 60.87
+pitts2_coef_Definitely_Declining <- 7.83
+pitts2_coef_Hazardous <- 11.88
+pitts2_coef_Industrial <- 10.72
+
+pitts_value_equation <- paste(
+  "y = ", pitts2_intercept, "\n",
+  "    + ", pitts2_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", pitts2_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", pitts2_coef_Industrial, "* E_Industrial"
+)
+
+
+cat("Pittsburgh Index Value Equation:\n", pitts_value_equation, "\n")
+
+
+### Cleveland Minority Index Equation
+cleve1_intercept <- 0.3889
+cleve1_coef_Definitely_Declining <- 0.14
+cleve1_coef_Hazardous <- 0.29
+cleve1_coef_Industrial <- 0.18
+
+cleve_minority_equation <-  paste(
+  "y = ", cleve1_intercept, "\n",
+  "    + ", cleve1_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", cleve1_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", cleve1_coef_Industrial, "* E_Industrial"
+)
+
+
+cat("Cleveland Minority Percentage Equation:\n", cleve_minority_equation, "\n")
+
+
+
+### Cleveland ERAP Value Equation
+cleve2_intercept <- 58.49
+cleve2_coef_Definitely_Declining <- 9.91
+cleve2_coef_Hazardous <- 25.3
+cleve2_coef_Industrial <- 16.07
+
+cleve_value_equation <- paste(
+  "y = ", cleve2_intercept, "\n",
+  "    + ", cleve2_coef_Definitely_Declining, "* C_Definitely_Declining \n",
+  "    + ", cleve2_coef_Hazardous, "* C_Hazardous \n",
+  "    + ", cleve2_coef_Industrial, "* E_Industrial"
+)
+
+cat("Cleveland Index Value Equation:\n", cleve_value_equation, "\n")
+
+
+```
+
+
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 Cleveland__erap_redlining_dataset <- st_read("../data/Cleveland_erap_redlining.geojson", quiet=TRUE)
