@@ -1,0 +1,175 @@
+---
+title: "Redlining Models"
+author: "Emily Blue"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(dplyr)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+Cleveland__erap_redlining_dataset <- st_read("Cleveland_erap_redlining.geojson", quiet=TRUE)
+
+Seattle_erap_redlining_dataset <- st_read("Seattle_erap_redlining_data.geojson", quiet=TRUE)
+
+Pittsburgh_erap_redlining_dataset <- st_read("Pittsburgh_erap_redlining.geojson", quiet=TRUE)
+
+Chicago_erap_redlining_dataset <- st_read("Chicago_erap_redlining.geojson", quiet=TRUE)
+
+```
+
+
+### Seattle Redlining Models
+
+Reference Categories (Grade A: Best & Grade B: Still Desirable)
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+seattle_model_cat_minority <- lm(percent_minority ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Seattle_erap_redlining_dataset)
+
+seattle_erap_model_cat <- lm(index_value ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Seattle_erap_redlining_dataset)
+
+
+## Predicting Current Seattle Percent Minority with Redlining Grade
+### Reference Category: A: Best and B: Still desirable 
+
+
+```
+
+#### Predicting Current Seattle Percent Minority with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(seattle_model_cat_minority)
+```
+
+#### Predicting Seattle ERAP Index with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(seattle_erap_model_cat)
+```
+
+
+
+
+### Cleveland Redlining Models
+
+Reference Categories (Grade A: Best & Grade B: Still Desirable)
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+# Binaries for cat
+Cleveland__erap_redlining_dataset <- Cleveland__erap_redlining_dataset %>%
+  mutate(cat_Best_Still_Desirable = ifelse(cat == "Best" | cat == "Still Desirable", 1, 0),
+         cat_Definitely_Declining = ifelse(cat == "Definitely Declining", 1, 0),
+         cat_Hazardous = ifelse(cat == "Hazardous", 1, 0),
+         cat_Industrial = ifelse(grade == "E", 1, 0))
+
+
+
+cleve_model_cat_minority <- lm(percent_minority ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Cleveland__erap_redlining_dataset)
+
+
+cleve_erap_model_cat <- lm(index_value ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Cleveland__erap_redlining_dataset)
+
+## Predicting Current Cleveland Percent Minority with Redlining Grade
+### Reference Category: A: Best and B: Still desirable 
+
+
+```
+
+#### Predicting Current Cleveland Percent Minority with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+summary(cleve_model_cat_minority)
+
+```
+
+
+#### Predicting Cleveland ERAP Index with Redlining Grade
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+summary(cleve_erap_model_cat)
+
+```
+
+
+
+
+
+
+### Pittsburgh Redlining Models
+
+Reference Categories (Grade A: Best & Grade B: Still Desirable)
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+pitts_model_cat_minority <- lm(percent_minority ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Pittsburgh_erap_redlining_dataset)
+
+
+pitts_erap_model_cat <- lm(index_value ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Pittsburgh_erap_redlining_dataset)
+
+
+## Predicting Current Pittsburgh Percent Minority with Redlining Grade
+### Reference Category: A: Best and B: Still desirable 
+
+
+```
+
+#### Predicting Current Pittsburgh Percent Minority with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(pitts_model_cat_minority)
+
+```
+
+
+#### Predicting Pittsburgh ERAP Index with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(pitts_erap_model_cat)
+```
+
+
+
+
+### Chicago Redlining Models
+
+Reference Categories (Grade A: Best & Grade B: Still Desirable)
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+chicago_model_cat_minority <- lm(percent_minority ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Chicago_erap_redlining_dataset)
+
+
+chicago_erap_model_cat <- lm(index_value ~  cat_Definitely_Declining + cat_Hazardous + cat_Industrial, data = Chicago_erap_redlining_dataset)
+
+## Predicting Current Chicago Percent Minority with Redlining Grade
+### Reference Category: A: Best and B: Still desirable 
+
+
+```
+
+
+#### Predicting Current Chicago Percent Minority with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(chicago_model_cat_minority)
+```
+
+#### Predicting Chicago ERAP Index with Redlining Grade
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(chicago_erap_model_cat)
+
+```
+
+
+
+...
+
