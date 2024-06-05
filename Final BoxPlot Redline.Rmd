@@ -1,0 +1,151 @@
+---
+title: "Box Plots: Minority Percentage by HOC Redlining Grade"
+author: "Emily Blue"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(dplyr)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+Cleveland__erap_redlining_dataset <- st_read("Cleveland_erap_redlining.geojson", quiet=TRUE)
+
+Seattle_erap_redlining_dataset <- st_read("Seattle_erap_redlining.geojson", quiet=TRUE)
+
+Pittsburgh_erap_redlining_dataset <- st_read("Pittsburgh_erap_redlining.geojson", quiet=TRUE)
+
+Chicago_erap_redlining_dataset <- st_read("Chicago_erap_redlining.geojson", quiet=TRUE)
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+sea_poc_boxplot <- ggplot(data = Seattle_erap_redlining_dataset) +
+  aes(x = grade, y = percent_minority, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Seattle"), atop(italic("Current Minority Percentage by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "Current POC %") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+sea_poc_boxplot
+
+
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+clev_poc_boxplot <- ggplot(data = Cleveland__erap_redlining_dataset) +
+  aes(x = grade, y = percent_minority, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Cleveland"), atop(italic("Current Minority Percentage by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "Current POC %") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+
+clev_poc_boxplot
+
+
+```
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+pitts_poc_boxplot <- ggplot(data = Pittsburgh_erap_redlining_dataset) +
+  aes(x = grade, y = percent_minority, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Pittsburgh"), atop(italic("Current Minority Percentage by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "Current POC %") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+pitts_poc_boxplot
+
+```
+
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+chicago_poc_boxplot <- ggplot(data = Chicago_erap_redlining_dataset) +
+  aes(x = grade, y = percent_minority, fill = grade) +  
+  geom_boxplot(alpha = 0.5) +
+  ggtitle(expression(atop(bold("Chicago"), atop(italic("Current Minority Percentage by HOC Redlining Grade"), "")))) + 
+  labs(x = "", y = "Current POC %") +
+  scale_x_discrete(labels = c(
+    "A" = expression(atop(bold("A."), "Best")),
+    "B" = expression(atop(bold("B."), "Still Desirable")),
+    "C" = expression(atop(bold("C."), "Definitely Declining")),
+    "D" = expression(atop(bold("D."), "Hazardous")),
+    "E" = expression(atop(bold("E."), "Industrial/Business"))
+  )) +
+  scale_fill_manual(values = c("A" = "mediumseagreen", "B" = "dodgerblue3", "C" = "khaki1", "D" = "indianred", "E" = "gray48")) +
+  theme(panel.grid.major.y = element_blank(),  
+        panel.grid.major.x = element_line(color = "gray", linetype = "dotted"),
+        axis.text.x = element_text(size = 8))
+
+chicago_poc_boxplot
+
+
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+### Saving Boxplot Images
+ggsave("sea_poc_boxplot.png", sea_poc_boxplot)
+ggsave("pitts_poc_boxplot.png", pitts_poc_boxplot)
+ggsave("clev_poc_boxplot.png", clev_poc_boxplot)
+ggsave("chicago_poc_boxplot.png", chicago_poc_boxplot)
+
+```
+
+
+
+...
+
