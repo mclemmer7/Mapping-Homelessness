@@ -5,19 +5,11 @@ library(tidyverse)
 library(car)
 
 # Grab data from eviction lab
-# What data do we really want from the eviction lab? This tract dataset has the eviction filings, filing rates, threats
-# Tract data also includes the fips and tracts, so it's better than county_proprietary.
-# Do we want the renting_hh, filings_observed, ind_filings_court_issued, and hh_threat_observed from county_court_issued?
-# Could merge the datasets
 eviction_lab <- read_csv("../data/tract_proprietary_valid_2000_2018.csv")
-county_court_issued_2000_2018 <- read_csv("../data/county_court-issued_2000_2018.csv")
 wa_eviction_lab <- read_csv("../data/WA_counties.csv")
 
 wa_evictions <- eviction_lab |>
   filter(state == "Washington")
-
-county_court_evictions <- county_court_issued_2000_2018 |>
-  filter(state == "Washington" & county == "King County")
 
 erap_index <- st_read("../data/erap_index.geojson")
 erap_index$census_tract <- as.numeric(substr(erap_index$GEOID, 6, 11))
@@ -39,11 +31,6 @@ eviction_erap_tract <- wa_erap |>
 king_eviction_erap <- eviction_erap_tract |>
   filter(county_name == "King County")
 
-# Now use eviction data with king county
-#eviction_erap_court <- wa_erap |>
-#  inner_join(county_court_evictions, by=c("GEOID" = "fips")) |>
-#  filter(!is.na(index_value))
-
 wa_erap$cofips <- substr(wa_erap$GEOID, 1, 5)
 king_merged_geo_eviction <- merge(wa_erap, wa_evictions, by = "cofips")
 
@@ -60,7 +47,7 @@ king_eviction_lab <- wa_eviction_lab |>
 # Modify erap data for washington to merge with this dataset
 wa_erap$cofips <- as.numeric(substr(wa_erap$GEOID, 1, 5))
 
-# TODO - calculate a mean of each of the erap counties based on if their cofips value is the same, then merge
+# Calculate a mean of each of the erap counties based on if their cofips value is the same, then merge
 # Should probably also remove the geometry column since it won't show the whole county anymore (st_set_geometry(NULL) |>)
 wa_erap_condensed <- wa_erap |>
   group_by(cofips) |>
@@ -118,7 +105,7 @@ summary(mod)
 
 
 # Bring in data for legacy WA_tracts
-WA_tracts <- read_csv("../data/WA_tracts.csv")
+WA_tracts <- read_csv("../data/Eviction_Lab/WA_tracts.csv")
 
 WA_tracts$GEOID <- as.character(WA_tracts$GEOID)
 wa_erap$GEOID <- as.character(wa_erap$GEOID)
@@ -132,7 +119,9 @@ wa_evic_lab_tracts <- WA_tracts |>
 wa_eviction_erap_tracts <- wa_erap |>
   left_join(wa_evic_lab_tracts, by="GEOID")
 
-#st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
+wa_eviction_erap_tracts$eviction_rate <- (wa_eviction_erap_tracts$evictions / wa_eviction_erap_tracts$population) * 1000
+
+st_write(wa_eviction_erap_tracts, dsn = "wa_eviction_erap_tracts.geojson", row.names = FALSE)
 
 # Map out merged tract dataset
 ggplot(wa_eviction_erap_tracts) +
@@ -141,7 +130,7 @@ ggplot(wa_eviction_erap_tracts) +
 
 
 # Merge Cleveland Ohio data with ERAP
-OH_tracts <- read_csv("../data/OH_tracts.csv")
+OH_tracts <- read_csv("../data/Eviction_Lab/OH_tracts.csv")
 
 oh_erap <- erap_index |>
   filter(state_name == "Ohio")
@@ -159,11 +148,13 @@ oh_evic_lab_tracts <- OH_tracts |>
 oh_eviction_erap_tracts <- oh_erap |>
   left_join(oh_evic_lab_tracts, by="GEOID")
 
-#st_write(oh_eviction_erap_tracts, dsn = "oh_eviction_erap_tracts.geojson", row.names = FALSE)
+oh_eviction_erap_tracts$eviction_rate <- (oh_eviction_erap_tracts$evictions / oh_eviction_erap_tracts$population) * 1000
+
+st_write(oh_eviction_erap_tracts, dsn = "oh_eviction_erap_tracts.geojson", row.names = FALSE)
 
 
 # Merge pennsylvania data with ERAP
-PA_tracts <- read_csv("../data/PA_tracts.csv")
+PA_tracts <- read_csv("../data/Eviction_Lab/PA_tracts.csv")
 
 pa_erap <- erap_index |>
   filter(state_name == "Pennsylvania")
@@ -181,11 +172,12 @@ pa_evic_lab_tracts <- PA_tracts |>
 pa_eviction_erap_tracts <- pa_erap |>
   left_join(pa_evic_lab_tracts, by="GEOID")
 
-#st_write(pa_eviction_erap_tracts, dsn = "pa_eviction_erap_tracts.geojson", row.names = FALSE)
+pa_eviction_erap_tracts$eviction_rate <- (pa_eviction_erap_tracts$evictions / pa_eviction_erap_tracts$population) * 1000
+st_write(pa_eviction_erap_tracts, dsn = "pa_eviction_erap_tracts.geojson", row.names = FALSE)
 
 
 # Merge pennsylvania data with ERAP
-IL_tracts <- read_csv("../data/IL_tracts.csv")
+IL_tracts <- read_csv("../data/Eviction_Lab/IL_tracts.csv")
 
 il_erap <- erap_index |>
   filter(state_name == "Illinois")
@@ -203,12 +195,16 @@ il_evic_lab_tracts <- IL_tracts |>
 il_eviction_erap_tracts <- il_erap |>
   left_join(il_evic_lab_tracts, by="GEOID")
 
-#st_write(il_eviction_erap_tracts, dsn = "il_eviction_erap_tracts.geojson", row.names = FALSE)
+il_eviction_erap_tracts$eviction_rate <- (il_eviction_erap_tracts$evictions / il_eviction_erap_tracts$population) * 1000
+
+st_write(il_eviction_erap_tracts, dsn = "il_eviction_erap_tracts.geojson", row.names = FALSE)
+
 
 
 
 # Merge everything together to have redlining data with the evictions and erap
-seattle_redlining <- st_read("../data/Seattle_erap_redlining_dataset.geojson")
+# Merge for seattle
+seattle_redlining <- st_read("../data/Seattle_erap_redlining.geojson")
 
 seattle_redlining$geometry <- NULL
 seattle_redlining_simplified <- seattle_redlining |>
@@ -226,7 +222,7 @@ merged_seattle_data <- seattle_redlining_simplified |>
 st_write(merged_seattle_data, dsn = "seattle_erap_red_evic.geojson", row.names = FALSE)
 
 # Merge data for cleveland
-cleveland_redlining <- st_read("../data/Cleveland__erap_redlining_dataset.geojson")
+cleveland_redlining <- st_read("../data/Cleveland_erap_redlining.geojson")
 
 cleveland_redlining$geometry <- NULL
 cleveland_redlining_simplified <- cleveland_redlining |>
@@ -245,7 +241,7 @@ st_write(merged_cleveland_data, dsn = "cleveland_erap_red_evic.geojson", row.nam
 
 
 # Merge data for pittsburgh
-pittsburgh_redlining <- st_read("../data/Pittsburgh_erap_redlining_dataset.geojson")
+pittsburgh_redlining <- st_read("../data/Pittsburgh_erap_redlining.geojson")
 
 pittsburgh_redlining$geometry <- NULL
 pittsburgh_redlining_simplified <- pittsburgh_redlining |>
@@ -264,7 +260,7 @@ st_write(merged_pittsburgh_data, dsn = "pittsburgh_erap_red_evic.geojson", row.n
 
 
 # Merge data for chicago
-chicago_redlining <- st_read("../data/Chicago_erap_redlining_dataset.geojson")
+chicago_redlining <- st_read("../data/Chicago_erap_redlining.geojson")
 
 chicago_redlining$geometry <- NULL
 chicago_redlining_simplified <- chicago_redlining |>
